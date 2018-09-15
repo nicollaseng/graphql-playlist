@@ -12,15 +12,15 @@ const {
 
 //dummy database
 var books = [ 
-        { name: 'Age of Empires', genre: 'Fantasy', id: '1'},
-        { name: 'Age of Persian', genre: 'Fantasy', id: '2'},
-        { name: 'Age of Times', genre: 'Fantasy', id: '3'},
+        { name: 'Age of Empires', genre: 'Fantasy', id: '1', authorId: '1'},
+        { name: 'Age of Persian', genre: 'Fantasy', id: '2', authorId: '2'},
+        { name: 'Age of Times', genre: 'Fantasy', id: '3', authorId: '3'},
     ]
 
 var authors = [ 
     { name: 'Marcos', age: 44 , id: '1'},
-    { name: 'Manuel', genre: 43 , id: '2'},
-    { name: 'Joseias', genre: 47, id: '3'},
+    { name: 'Manuel', age: 43 , id: '2'},
+    { name: 'Joseias', age: 47, id: '3'},
 ]
 
 const BookType = new GraphQLObjectType({
@@ -28,7 +28,14 @@ const BookType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
-        genre: { type: GraphQLString }
+        genre: { type: GraphQLString },
+        author: {
+            type: AuthorType,
+            resolve(parents, args){
+                console.log(parents)
+                return _.find(authors, {id: parents.authorId})
+            }
+        }
     })
 })
 
